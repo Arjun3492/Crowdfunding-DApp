@@ -10,7 +10,7 @@ import { checkIfImage } from '../utils';
 const CreateCampaign = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { createCampaign } = useStateContext();
+  const { createCampaign, connectionStatus } = useStateContext();
   const [form, setForm] = useState({
     name: '',
     title: '',
@@ -35,19 +35,22 @@ const CreateCampaign = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (connectionStatus === "connected") {
 
-
-    checkIfImage(form.image, async (exists) => {
-      if (exists) {
-        setIsLoading(true)
-        await createCampaign({ ...form, target: ethers.utils.parseUnits(form.target, 18) })
-        setIsLoading(false);
-        navigate('/');
-      } else {
-        alert('Provide valid image URL')
-        setForm({ ...form, image: '' });
-      }
-    })
+      checkIfImage(form.image, async (exists) => {
+        if (exists) {
+          setIsLoading(true)
+          await createCampaign({ ...form, target: ethers.utils.parseUnits(form.target, 18) })
+          setIsLoading(false);
+          navigate('/');
+        } else {
+          alert('Provide valid image URL')
+          setForm({ ...form, image: '' });
+        }
+      })
+    } else {
+      alert('Please connect your wallet first')
+    }
   }
 
   return (
@@ -75,12 +78,12 @@ const CreateCampaign = () => {
           />
         </div>
 
-        <label for="campaign_category" className="flex-1 w-full flex flex-col">
+        <label htmlFor="campaign_category" className="flex-1 w-full flex flex-col">
           <span className="font-epilogue font-medium text-[14px] leading-[22px] text-[#808191] mb-[10px]">Select a Category</span>
           <select required value={form.category} onChange={(e) => handleFormFieldChange('category', e)} className="py-[15px] sm:px-[25px] px-[15px] outline-none border-[1px] border-[#3a3a43] bg-transparent font-epilogue text-white text-[14px] placeholder:text-[#4b5264] rounded-[10px] sm:min-w-[300px]"
           >
-            <option value="" disabled selected hidden>Choose a Category</option>
-            {categories.map((category) => (<option className='bg-[#1c1c24]' value={category}>{category}</option>
+            <option value="" disabled hidden>Choose a Category</option>
+            {categories.map((category, i) => (<option className='bg-[#1c1c24]' key={i} value={category}>{category}</option>
             ))}
           </select>
         </label>

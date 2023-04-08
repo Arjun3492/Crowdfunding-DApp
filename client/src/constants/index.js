@@ -1,5 +1,8 @@
 import { createCampaign, dashboard, logout, payment, profile, withdraw } from '../assets';
 
+
+export const smartContractAddress = "0x1b184db8a9DbDbEaa1d46aa1C440A49a4B2387f5";
+
 export const navlinks = [
   {
     name: 'dashboard',
