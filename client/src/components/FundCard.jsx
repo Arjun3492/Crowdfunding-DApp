@@ -18,10 +18,10 @@ const FundCard = ({ owner, title, description, category, target, deadline, amoun
             <img src={tagType} alt="tag" className="w-[17px] h-[17px] object-contain" />
             <p className="ml-[12px] mt-[2px] font-epilogue font-medium text-[12px] text-[#808191]">{category}</p>
           </div>
-
-          <div>
-            <h4 className="font-epilogue font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">Expired</h4>
-          </div>
+          {(remainingDays <= 0) &&
+            <div>
+              <h4 className="font-epilogue font-semibold text-[14px] text-[#b2b3bd] leading-[22px]">Expired</h4>
+            </div>}
         </div>
 
 
